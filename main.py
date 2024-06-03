@@ -17,13 +17,13 @@ from eye_model import predict_eye_state, load_eye_model
 
 # Initialize face detector and shape predictor
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor("../dlib/shape_predictor_68_face_landmarks.dat")
+predictor = dlib.shape_predictor("dlib/shape_predictor_68_face_landmarks.dat")
 output_folder = "eye_images"
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
 # Load pre-trained eye state model
-model_path = '../model/best_modelv4.h5'
+model_path = 'model/best_modelv4.h5'
 eye_model = load_eye_model(model_path)
 
 # Queue for storing eye images
