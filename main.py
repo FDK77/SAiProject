@@ -48,14 +48,18 @@ class EyeDetectionApp(App):
         self.frame_count = 0
         self.capture = cv2.VideoCapture(0)
         self.img = Image()
-        self.eye_state_label = Label(text="Состояние глаз: Неизвестно", font_size='20sp')
-        self.face_detection_label = Label(text="Обнаружение лица: Не обнаружено", font_size='20sp')
-        self.alert_label = Label(text="", font_size='20sp', color=(1, 0, 0, 1))
+        self.eye_state_label = Label(text="Состояние глаз: Неизвестно", font_size='18sp', size_hint_y=0.1)
+        self.face_detection_label = Label(text="Обнаружение лица: Не обнаружено", font_size='18sp', size_hint_y=0.1)
+        self.alert_label = Label(text="", font_size='18sp', color=(1, 0, 0, 1), size_hint_y=0.1)
 
         layout = BoxLayout(orientation='vertical')
         layout.add_widget(self.img)
-        layout.add_widget(self.eye_state_label)
-        layout.add_widget(self.face_detection_label)
+
+        info_layout = BoxLayout(orientation='horizontal', size_hint_y=0.3)
+        info_layout.add_widget(self.eye_state_label)
+        info_layout.add_widget(self.face_detection_label)
+
+        layout.add_widget(info_layout)
         layout.add_widget(self.alert_label)
 
         Clock.schedule_interval(self.update, 1.0 / 30.0)  # Update at 30 FPS
@@ -71,7 +75,6 @@ class EyeDetectionApp(App):
         self.closed_eyes_start_time = None  # Initialize closed_eyes_start_time
 
         return layout
-
     def update(self, dt):
         global last_face_detected, face_detection_start_time
 
@@ -90,7 +93,6 @@ class EyeDetectionApp(App):
             else:
                 elapsed_time = current_time - face_detection_start_time
                 if elapsed_time >= face_detection_threshold:
-                    self.alert_label.text = "Пожалуйста, измените положение камеры!"
                     self.face_detection_label.text = "Обнаружение лица: Не обнаружено"
                     if not pygame.mixer.Channel(1).get_busy():
                         pygame.mixer.Channel(1).play(self.siren_sound)
